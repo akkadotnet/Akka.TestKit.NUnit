@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Akka.TestKit.NUnit", "Akka.TestKit.NUnit\Akka.TestKit.NUnit.csproj", "{BEF84A6F-32C4-4ACF-AFC3-7B5FCA6F209E}"
 EndProject
@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{54ADC247-86D5-4DEB-9A7E-3BFD3A0D67E8}"
 	ProjectSection(SolutionItems) = preProject
 		..\build.fsx = ..\build.fsx
+		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
 Global
