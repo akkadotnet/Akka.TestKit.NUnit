@@ -234,3 +234,10 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+
+tools/
+build/
+.nuget/
+.dotnet/
+.idea/
+.[Dd][Ss]_[Ss]tore
