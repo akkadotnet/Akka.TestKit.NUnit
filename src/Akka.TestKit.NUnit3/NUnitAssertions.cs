@@ -8,13 +8,14 @@
 using System;
 using NUnit.Framework;
 
-namespace Akka.TestKit.NUnit
+namespace Akka.TestKit.NUnit3
 {
     /// <summary>
     /// Assertions for NUnit
     /// </summary>
     public class NUnitAssertions  : ITestKitAssertions
     {
+        
         public void Fail(string format = "", params object[] args)
         {
             Assert.Fail(format, args);

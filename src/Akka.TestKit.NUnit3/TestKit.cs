@@ -10,7 +10,7 @@ using Akka.Actor;
 using Akka.Configuration;
 using NUnit.Framework;
 
-namespace Akka.TestKit.NUnit
+namespace Akka.TestKit.NUnit3
 {
     /// <summary>
     /// TestKit for NUnit.

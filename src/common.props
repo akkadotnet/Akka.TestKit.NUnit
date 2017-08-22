@@ -4,9 +4,9 @@
     <Authors>Your Authors</Authors>
     <VersionPrefix>0.1.0</VersionPrefix>
     <PackageReleaseNotes>Placeholder</PackageReleaseNotes>
-    <PackageIconUrl></PackageIconUrl>
-    <PackageProjectUrl></PackageProjectUrl>
-    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageIconUrl>http://getakka.net/images/akkalogo.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/AkkaNetContrib/Akka.TestKit.Nunit</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/AkkaNetContrib/Akka.TestKit.Nunit/blob/dev/LICENSE</PackageLicenseUrl>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
