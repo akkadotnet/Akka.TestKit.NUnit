@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <Copyright>Copyright © 2017 Your Company</Copyright>
+    <Authors>Your Authors</Authors>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <PackageReleaseNotes>Placeholder</PackageReleaseNotes>
+    <PackageIconUrl>http://getakka.net/images/akkalogo.png</PackageIconUrl>
+    <PackageProjectUrl>https://github.com/AkkaNetContrib/Akka.TestKit.Nunit</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/AkkaNetContrib/Akka.TestKit.Nunit/blob/dev/LICENSE</PackageLicenseUrl>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <XunitVersion>2.3.0-beta4-*</XunitVersion>
+  </PropertyGroup>
+</Project>

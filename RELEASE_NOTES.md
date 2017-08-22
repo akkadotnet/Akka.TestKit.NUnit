@@ -6,7 +6,7 @@ Support for Akka 1.2.3
 
 Support for Akka 1.2.1
 
-#### 1.1.3 Februari 10 2017 ####
+#### 1.1.3 February 10 2017 ####
 
 Support for Akka 1.1.3
 
