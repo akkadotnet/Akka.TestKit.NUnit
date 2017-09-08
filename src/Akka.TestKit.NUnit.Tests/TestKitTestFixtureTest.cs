@@ -5,7 +5,6 @@
 // </copyright>
 //----------------------------------------------------------------------
 
-using System;
 using Akka.Actor;
 using Akka.TestKit.TestActors;
 using NUnit.Framework;

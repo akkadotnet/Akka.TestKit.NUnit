@@ -20,17 +20,15 @@ namespace Akka.TestKit.NUnit.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(AssertionException))]
         public void Fail_should_throw()
         {
-            _assertions.Fail();
+            Assert.Throws<AssertionException>(() => _assertions.Fail());
         }
 
         [Test]
-        [ExpectedException(typeof(AssertionException))]
         public void AssertTrue_should_throw_on_false()
         {
-            _assertions.AssertTrue(false);
+            Assert.Throws<AssertionException>(() => _assertions.AssertTrue(false));
         }
 
         [Test]
@@ -40,10 +38,9 @@ namespace Akka.TestKit.NUnit.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(AssertionException))]
         public void AssertFalse_should_throw_on_true()
         {
-            _assertions.AssertFalse(true);
+            Assert.Throws<AssertionException>(() => _assertions.AssertFalse(true));
         }
 
         [Test]
@@ -53,10 +50,9 @@ namespace Akka.TestKit.NUnit.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(AssertionException))]
         public void AssertEqual_should_throw_on_not_equal()
         {
-            _assertions.AssertEqual(42, 4711);
+            Assert.Throws<AssertionException>(() => _assertions.AssertEqual(42, 4711));
         }
 
         [Test]
@@ -66,10 +62,9 @@ namespace Akka.TestKit.NUnit.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(AssertionException))]
         public void AssertEqualWithComparer_should_throw_on_not_equal()
         {
-            _assertions.AssertEqual(42, 42, (x, y) => false);
+            Assert.Throws<AssertionException>(() => _assertions.AssertEqual(42, 42, (x, y) => false));
         }
 
         [Test]
