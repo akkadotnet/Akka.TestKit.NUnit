@@ -1,317 +1,123 @@
-﻿#I @"src/packages/FAKE/tools"
+﻿#I @"tools/FAKE/tools"
 #r "FakeLib.dll"
-#r "System.Xml.Linq"
 
 open System
 open System.IO
 open System.Text
+
 open Fake
-open Fake.FileUtils
-open Fake.NUnitCommon
-open Fake.TaskRunnerHelper
-open Fake.ProcessHelper
+open Fake.DotNetCli
+open Fake.DocFxHelper
 
-cd __SOURCE_DIRECTORY__
-
-//--------------------------------------------------------------------------------
-// Information about the project for Nuget and Assembly info files
-//--------------------------------------------------------------------------------
-
-
-let product = "Akka.NET"
-let authors = [ "Akka.NET Team" ]
-let copyright = "Copyright © 2013-2016 Akka.NET Team"
-let company = "Akka.NET Team"
-let description = "Akka.NET is a port of the popular Java/Scala framework Akka to .NET"
-let tags = ["akka";"actors";"actor";"model";"Akka";"concurrency"]
+// Variables
 let configuration = "Release"
-let toolDir = "tools"
-let CloudCopyDir = toolDir @@ "CloudCopy"
-let AzCopyDir = toolDir @@ "AzCopy"
 
-// Read release notes and version
-
-let parsedRelease =
-    File.ReadLines "RELEASE_NOTES.md"
-    |> ReleaseNotesHelper.parseReleaseNotes
-
-let envBuildNumber = System.Environment.GetEnvironmentVariable("BUILD_NUMBER")
-let buildNumber = if String.IsNullOrWhiteSpace(envBuildNumber) then "0" else envBuildNumber
-
-let version = parsedRelease.AssemblyVersion + "." + buildNumber
-let preReleaseVersion = version + "-beta"
-
-let isUnstableDocs = hasBuildParam "unstable"
-let isPreRelease = hasBuildParam "nugetprerelease"
-let release = if isPreRelease then ReleaseNotesHelper.ReleaseNotes.New(version, version + "-beta", parsedRelease.Notes) else parsedRelease
-
-printfn "Assembly version: %s\nNuget version; %s\n" release.AssemblyVersion release.NugetVersion
-//--------------------------------------------------------------------------------
 // Directories
+let output = __SOURCE_DIRECTORY__  @@ "build"
+let outputTests = output @@ "tests"
+let outputBinaries = output @@ "binaries"
+let outputNuGet = output @@ "nuget"
 
-let binDir = "bin"
-let testOutput = FullName "TestResults"
-let perfOutput = FullName "PerfResults"
+let buildNumber = environVarOrDefault "BUILD_NUMBER" "0"
+let preReleaseVersionSuffix = "beta" + (if (not (buildNumber = "0")) then (buildNumber) else "")
+let versionSuffix = 
+    match (getBuildParam "nugetprerelease") with
+    | "dev" -> preReleaseVersionSuffix
+    | _ -> ""
 
-let nugetDir = binDir @@ "nuget"
-let workingDir = binDir @@ "build"
-let nugetExe = FullName @"src\.nuget\NuGet.exe"
-let docDir = "bin" @@ "doc"
+Target "Clean" (fun _ ->
+    CleanDir output
+    CleanDir outputTests
+    CleanDir outputBinaries
+    CleanDir outputNuGet
 
-open Fake.RestorePackageHelper
-Target "RestorePackages" (fun _ -> 
-     "./src/Akka.TestKit.Nunit.sln"
-     |> RestoreMSSolutionPackages (fun p ->
-         { p with
-             OutputPath = "./src/packages"
-             Retries = 4 })
- )
+    CleanDirs !! "./**/bin"
+    CleanDirs !! "./**/obj"
+)
 
-//--------------------------------------------------------------------------------
-// Clean build results
+Target "RestorePackages" (fun _ ->
+    DotNetCli.Restore
+        (fun p -> 
+            { p with
+                Project = "./src/Akka.TestKit.Nunit.sln"
+                NoCache = false })
+)
 
-Target "Clean" <| fun _ ->
-    DeleteDir binDir
-
-//--------------------------------------------------------------------------------
-// Generate AssemblyInfo files with the version for release notes 
-
-open AssemblyInfoFile
-
-Target "AssemblyInfo" <| fun _ ->
-    CreateCSharpAssemblyInfoWithConfig "src/SharedAssemblyInfo.cs" [
-        Attribute.Company company
-        Attribute.Copyright copyright
-        Attribute.Trademark ""
-        Attribute.Version version
-        Attribute.FileVersion version ] <| AssemblyInfoFileConfig(false)
-
-
-//--------------------------------------------------------------------------------
-// Build the solution
-
-Target "Build" <| fun _ ->
-
-    !!"src/Akka.TestKit.Nunit.sln"
-    |> MSBuildRelease "" "Rebuild"
-    |> ignore
+Target "Build" (fun _ ->
+        DotNetCli.Build
+            (fun p -> 
+                { p with
+                    Project = "./src/Akka.TestKit.Nunit.sln"
+                    Configuration = configuration })
+)
 
 //--------------------------------------------------------------------------------
-// Copy the build output to bin directory
+// Tests targets 
 //--------------------------------------------------------------------------------
 
-Target "CopyOutput" <| fun _ ->
-    
-    let copyOutput project =
-        let src = "src" @@ project @@ @"bin/Release/"
-        let dst = binDir @@ project
-        CopyDir dst src allFiles
-    [ "Akka.TestKit.NUnit"
-      "Akka.TestKit.NUnit3"
-      ]
-    |> List.iter copyOutput
+Target "RunTests" (fun _ ->
+    let projects = !! "./**/*.Tests.csproj"
 
-Target "BuildRelease" DoNothing
- 
+    let runSingleProject project =
+        DotNetCli.Test
+            (fun p -> 
+                { p with
+                    Project = project
+                    Configuration = configuration })
 
-
-//--------------------------------------------------------------------------------
-// Tests targets
-//--------------------------------------------------------------------------------
-
-//--------------------------------------------------------------------------------
-// Clean test output
-
-Target "CleanTests" <| fun _ ->
-    DeleteDir testOutput
-//--------------------------------------------------------------------------------
-// Run tests
-
-open Fake.Testing
-Target "RunTests" <| fun _ ->  
-    let nunitTestAssemblies = !! "src/**/bin/Release/Akka.TestKit.NUnit.Tests.dll" ++ "src/**/bin/Release/Akka.TestKit.NUnit3.Tests.dll"
-
-    mkdir testOutput
-
-    nunitTestAssemblies
-    |> NUnit3 (fun p -> 
-        {p with
-            ShadowCopy = false;
-            ResultSpecs = [(testOutput + @"\NUnitTestResults.xml")]})
+    projects |> Seq.iter (runSingleProject)
+)
 
 //--------------------------------------------------------------------------------
 // Nuget targets 
 //--------------------------------------------------------------------------------
 
-open NuGet.Update
-//--------------------------------------------------------------------------------
-// Upgrade nuget package versions for dev and production
+Target "CreateNuget" (fun _ ->
+    let envBuildNumber = environVarOrDefault "APPVEYOR_BUILD_NUMBER" "0"
+    let branch =  environVarOrDefault "APPVEYOR_REPO_BRANCH" ""
+    let versionSuffix = if branch.Equals("dev") then (sprintf "beta%s" envBuildNumber) else ""
 
-let updateNugetPackages _ =
-  printfn "Updating NuGet dependencies"
+    let projects = !! "./**/Akka.TestKit.NUnit.csproj" ++ "./**/Akka.TestKit.NUnit3.csproj"
 
-  let getConfigFile preRelease =
-    match preRelease with
-    | true -> "src/.nuget/NuGet.Dev.Config" 
-    | false -> "src/.nuget/NuGet.Config" 
-
-  for projectFile in !! "src/**/*.csproj" do
-    printfn "Updating packages for %s" projectFile
-    let project = Path.GetFileNameWithoutExtension projectFile
-    let projectDir = Path.GetDirectoryName projectFile
-    let config = projectDir @@ "packages.config"
-
-    NugetUpdate
-        (fun p ->
+    let runSingleProject project =
+        DotNetCli.Pack
+            (fun p -> 
                 { p with
-                    ConfigFile = Some (getConfigFile isPreRelease)
-                    Prerelease = isPreRelease
-                    ToolPath = nugetExe
-                    RepositoryPath = "src/Packages"
-                    Ids = ["Akka"]
-                    }) config
+                    Project = project
+                    Configuration = configuration
+                    AdditionalArgs = ["--include-symbols"]
+                    VersionSuffix = versionSuffix
+                    OutputPath = outputNuGet })
 
-Target "UpdateDependencies" <| fun _ ->
-    printfn "Invoking updateNugetPackages"
-    updateNugetPackages()
+    projects |> Seq.iter (runSingleProject)
+)
 
-//--------------------------------------------------------------------------------
-// Clean nuget directory
+Target "PublishNuget" (fun _ ->
+    let projects = !! "./bin/nuget/*.nupkg" -- "./bin/nuget/*.symbols.nupkg"
+    let apiKey = getBuildParamOrDefault "nugetkey" ""
+    let source = getBuildParamOrDefault "nugetpublishurl" ""
+    let symbolSource = getBuildParamOrDefault "symbolspublishurl" ""
+    let shouldPublishSymbolsPackages = not (symbolSource = "")
 
-Target "CleanNuget" <| fun _ ->
-    CleanDir nugetDir
+    if (not (source = "") && not (apiKey = "") && shouldPublishSymbolsPackages) then
+        let runSingleProject project =
+            DotNetCli.RunCommand
+                (fun p -> 
+                    { p with 
+                        TimeOut = TimeSpan.FromMinutes 10. })
+                (sprintf "nuget push %s --api-key %s --source %s --symbol-source %s" project apiKey source symbolSource)
 
-//--------------------------------------------------------------------------------
-// Pack nuget for all projects
-// Publish to nuget.org if nugetkey is specified
+        projects |> Seq.iter (runSingleProject)
+    else if (not (source = "") && not (apiKey = "") && not shouldPublishSymbolsPackages) then
+        let runSingleProject project =
+            DotNetCli.RunCommand
+                (fun p -> 
+                    { p with 
+                        TimeOut = TimeSpan.FromMinutes 10. })
+                (sprintf "nuget push %s --api-key %s --source %s" project apiKey source)
 
-let createNugetPackages _ =
-    let removeDir dir = 
-        let del _ = 
-            DeleteDir dir
-            not (directoryExists dir)
-        runWithRetries del 3 |> ignore
-    
-    let mutable dirId = 1
-     
-    ensureDirectory nugetDir
-    for nuspec in !! "src/**/*.nuspec" do
-        printfn "Creating nuget packages for %s" nuspec
-        
-        let tempBuildDir = workingDir + dirId.ToString()
-        ensureDirectory tempBuildDir
-        //clean it in case this target gets run multiple times. Which if it does is a bug. But hey since TC throws an exception when the dir is actually not empty. Its a nice circuitbreaker
-        CleanDir tempBuildDir
-        
-        let libDir = tempBuildDir @@ @"lib\net45\"
-        let project = Path.GetFileNameWithoutExtension nuspec 
-        let projectDir = Path.GetDirectoryName nuspec
-        let projectFile = (!! (projectDir @@ project + ".*sproj")) |> Seq.head
-        let releaseDir = projectDir @@ @"bin\Release"
-        let packages = projectDir @@ "packages.config"
-        let packageDependencies = if (fileExists packages) then (getDependencies packages) else []
-               
-        let pack outputDir symbolPackage =
-            NuGetHelper.NuGet
-                (fun p ->
-                    { p with
-                        Description = description
-                        Authors = authors
-                        Copyright = copyright
-                        Project =  project
-                        Properties = ["Configuration", "Release"]
-                        ReleaseNotes = release.Notes |> String.concat "\n"
-                        Version = release.NugetVersion
-                        Tags = tags |> String.concat " "
-                        OutputPath = outputDir
-                        WorkingDir = tempBuildDir
-                        SymbolPackage = symbolPackage
-                        Dependencies = packageDependencies })
-                nuspec
-
-        // Copy dll, pdb and xml to libdir = workingDir/lib/net45/
-        ensureDirectory libDir
-        !! (releaseDir @@ project + ".dll")
-        ++ (releaseDir @@ project + ".pdb")
-        ++ (releaseDir @@ project + ".xml")
-        ++ (releaseDir @@ project + ".ExternalAnnotations.xml")
-        |> CopyFiles libDir
-
-        // Copy all src-files (.cs and .fs files) to workingDir/src
-        let nugetSrcDir = tempBuildDir @@ @"src/"
-        // CreateDir nugetSrcDir
-
-        let isCs = hasExt ".cs"
-        let isFs = hasExt ".fs"
-        let isAssemblyInfo f = (filename f).Contains("AssemblyInfo")
-        let isSrc f = (isCs f || isFs f) && not (isAssemblyInfo f) 
-        CopyDir nugetSrcDir projectDir isSrc
-        
-        //Remove workingDir/src/obj and workingDir/src/bin
-        removeDir (nugetSrcDir @@ "obj")
-        removeDir (nugetSrcDir @@ "bin")
-
-        // Create both normal nuget package and symbols nuget package. 
-        // Uses the files we copied to workingDir and outputs to nugetdir
-        pack nugetDir NugetSymbolPackage.Nuspec
-
-        dirId <- dirId + 1
-
-let publishNugetPackages _ = 
-    let rec publishPackage url accessKey trialsLeft packageFile =
-        let tracing = enableProcessTracing
-        enableProcessTracing <- false
-        let args p =
-            match p with
-            | (pack, key, "") -> sprintf "push \"%s\" %s" pack key
-            | (pack, key, url) -> sprintf "push \"%s\" %s -source %s" pack key url
-
-        tracefn "Pushing %s Attempts left: %d" (FullName packageFile) trialsLeft
-        try 
-            let result = ExecProcess (fun info -> 
-                    info.FileName <- nugetExe
-                    info.WorkingDirectory <- (Path.GetDirectoryName (FullName packageFile))
-                    info.Arguments <- args (packageFile, accessKey,url)) (System.TimeSpan.FromMinutes 1.0)
-            enableProcessTracing <- tracing
-            if result <> 0 then failwithf "Error during NuGet symbol push. %s %s" nugetExe (args (packageFile, "key omitted",url))
-        with exn -> 
-            if (trialsLeft > 0) then (publishPackage url accessKey (trialsLeft-1) packageFile)
-            else raise exn
-    let shouldPushNugetPackages = hasBuildParam "nugetkey"
-    let shouldPushSymbolsPackages = (hasBuildParam "symbolspublishurl") && (hasBuildParam "symbolskey")
-    
-    if (shouldPushNugetPackages || shouldPushSymbolsPackages) then
-        printfn "Pushing nuget packages"
-        if shouldPushNugetPackages then
-            let normalPackages= 
-                !! (nugetDir @@ "*.nupkg") 
-                -- (nugetDir @@ "*.symbols.nupkg") |> Seq.sortBy(fun x -> x.ToLower())
-            for package in normalPackages do
-                try
-                    publishPackage (getBuildParamOrDefault "nugetpublishurl" "") (getBuildParam "nugetkey") 3 package
-                with exn ->
-                    printfn "%s" exn.Message
-
-        if shouldPushSymbolsPackages then
-            let symbolPackages= !! (nugetDir @@ "*.symbols.nupkg") |> Seq.sortBy(fun x -> x.ToLower())
-            for package in symbolPackages do
-                try
-                    publishPackage (getBuildParam "symbolspublishurl") (getBuildParam "symbolskey") 3 package
-                with exn ->
-                    printfn "%s" exn.Message
-
-
-Target "Nuget" <| fun _ -> 
-    createNugetPackages()
-    publishNugetPackages()
-
-Target "CreateNuget" <| fun _ -> 
-    createNugetPackages()
-
-Target "PublishNuget" <| fun _ -> 
-    publishNugetPackages()
-
-
+        projects |> Seq.iter (runSingleProject)
+)
 
 //--------------------------------------------------------------------------------
 // Help 
@@ -377,18 +183,21 @@ Target "HelpNuget" <| fun _ ->
 //  Target dependencies
 //--------------------------------------------------------------------------------
 
+Target "BuildRelease" DoNothing
+Target "Nuget" DoNothing
+
 // build dependencies
-"Clean" ==> "AssemblyInfo" ==> "RestorePackages" ==> "UpdateDependencies" ==> "Build" ==> "CopyOutput" ==> "BuildRelease"
+"Clean" ==> "RestorePackages" ==> "Build" ==> "BuildRelease"
+
 // tests dependencies
-"CleanTests" ==> "RunTests"
+"Clean" ==> "RestorePackages" ==> "RunTests"
 
 // nuget dependencies
-"CleanNuget" ==> "CreateNuget"
-"CleanNuget" ==> "BuildRelease" ==> "Nuget"
+"Clean" ==> "RestorePackages" ==> "Build" ==> "CreateNuget"
 
+// all
 Target "All" DoNothing
 "BuildRelease" ==> "All"
-"RunTests" ==> "All"
 "Nuget" ==> "All"
 
 RunTargetOrDefault "Help"

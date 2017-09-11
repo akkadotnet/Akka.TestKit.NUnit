@@ -15,6 +15,7 @@ namespace Akka.TestKit.NUnit
     /// </summary>
     public class NUnitAssertions  : ITestKitAssertions
     {
+        
         public void Fail(string format = "", params object[] args)
         {
             Assert.Fail(format, args);
