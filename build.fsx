@@ -202,7 +202,7 @@ Target "Nuget" DoNothing
 "Clean" ==> "RestorePackages" ==> "RunTests"
 
 // nuget dependencies
-"CreateNuget" ==> "PublishNuget" ==> "Nuget"
+"BuildRelease" ==> "CreateNuget" ==> "PublishNuget" ==> "Nuget"
 
 // all
 Target "All" DoNothing
