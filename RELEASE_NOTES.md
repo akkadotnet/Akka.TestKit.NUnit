@@ -1,3 +1,8 @@
+#### 1.3.8 July 14 2018
+
+* Support for Akka 1.3.8
+* Support for NUnit 3.10.1
+
 #### 1.3.2 October 31 2017
 * Support for Akka.NET v1.3.2
 * Support for .NET Standard 1.6

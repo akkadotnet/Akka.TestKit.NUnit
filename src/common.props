@@ -1,11 +1,11 @@
 <Project>
   <PropertyGroup>
-    <Copyright>Copyright © 2013-2017</Copyright>
+    <Copyright>Copyright © 2013-2018</Copyright>
     <Authors>Akka.NET Contrib</Authors>
     <Description>TestKit for writing tests for Akka.NET using NUnit.</Description>
-    <VersionPrefix>1.3.2</VersionPrefix>
-    <PackageReleaseNotes>Support for Akka.NET v1.3.2
-Support for .NET Standard 1.6</PackageReleaseNotes>
+    <VersionPrefix>1.3.8</VersionPrefix>
+    <PackageReleaseNotes>Support for Akka 1.3.8
+Support for NUnit 3.10.1</PackageReleaseNotes>
     <PackageTags>akka;actors;actor model;Akka;concurrency;testkit;nunit</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageIconUrl>http://getakka.net/images/akkalogo.png</PackageIconUrl>
@@ -14,8 +14,8 @@ Support for .NET Standard 1.6</PackageReleaseNotes>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
-    <NUnitVersion>3.8.1</NUnitVersion>
-    <NUnitAdapterVersion>3.8.0</NUnitAdapterVersion>
-    <AkkaTestKitVersion>1.3.2</AkkaTestKitVersion>
+    <NUnitVersion>3.10.1</NUnitVersion>
+    <NUnitAdapterVersion>3.10.0</NUnitAdapterVersion>
+    <AkkaTestKitVersion>1.3.8</AkkaTestKitVersion>
   </PropertyGroup>
 </Project>
