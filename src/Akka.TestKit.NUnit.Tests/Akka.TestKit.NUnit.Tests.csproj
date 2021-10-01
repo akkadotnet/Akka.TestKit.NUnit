@@ -2,9 +2,9 @@
   <Import Project="..\common.props" />
   <PropertyGroup>
     <AssemblyTitle>Akka.TestKit.NUnit.Tests</AssemblyTitle>
-    <TargetFrameworks>net45;netcoreapp2.0</TargetFrameworks>
+    <TargetFrameworks>net461;netcoreapp2.0</TargetFrameworks>
   </PropertyGroup>
- 
+
   <ItemGroup>
     <ProjectReference Include="..\Akka.TestKit.NUnit\Akka.TestKit.NUnit.csproj" />
   </ItemGroup>
