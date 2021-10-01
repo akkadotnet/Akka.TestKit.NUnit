@@ -1,17 +1,23 @@
-#### 1.3.8 July 14 2018
+#### 1.4.26 October 1 2021 ####
+
+* Support for Akka 1.4.26
+* Support for NUnit 3.13.2
+
+#### 1.3.8 July 14 2018 ####
 
 * Support for Akka 1.3.8
 * Support for NUnit 3.10.1
 
-#### 1.3.2 October 31 2017
+#### 1.3.2 October 31 2017 ####
+
 * Support for Akka.NET v1.3.2
 * Support for .NET Standard 1.6
 
-#### 1.2.3 July 10 2017
+#### 1.2.3 July 10 2017 ####
 
 Support for Akka 1.2.3
 
-#### 1.2.1 June 27 2017 
+#### 1.2.1 June 27 2017 ####
 
 Support for Akka 1.2.1
 
