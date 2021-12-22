@@ -14,7 +14,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{54ADC247-86D5-4DEB-9A7E-3BFD3A0D67E8}"
 	ProjectSection(SolutionItems) = preProject
 		..\build.fsx = ..\build.fsx
-		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
+		common.props = common.props
+		..\build.cmd = ..\build.cmd
+		..\build.ps1 = ..\build.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build-system", "build-system", "{DF37320A-7B31-4B24-A72D-8326E91E2DDE}"
+	ProjectSection(SolutionItems) = preProject
+		..\build-system\azure-pipeline.template.yaml = ..\build-system\azure-pipeline.template.yaml
+		..\build-system\pr-validation.yaml = ..\build-system\pr-validation.yaml
+		..\build-system\windows-release.yaml = ..\build-system\windows-release.yaml
 	EndProjectSection
 EndProject
 Global
