@@ -15,6 +15,9 @@ namespace Akka.TestKit.NUnit
     /// <summary>
     /// TestKit for NUnit.
     /// </summary>
+    /// 
+    [TestFixture]
+    [FixtureLifeCycle(LifeCycle.InstancePerTestCase)]
     public class TestKit : TestKitBase, IDisposable
     {
         private static readonly NUnitAssertions _assertions = new NUnitAssertions();
