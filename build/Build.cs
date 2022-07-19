@@ -50,32 +50,13 @@ partial class Build : NukeBuild
     [Parameter] string NugetPublishUrl = "https://api.nuget.org/v3/index.json";
     [Parameter][Secret] string NugetKey;
 
-    [Parameter] int Port = 8090;
-
-    [Parameter] string SymbolsPublishUrl;
-
-    //usage:
-    //.\build.cmd createnuget --NugetPrerelease {suffix}
     [Parameter] string NugetPrerelease;
-
-    // Metadata used when signing packages and DLLs
-    [Parameter] string SigningName = "My Library";
-    [Parameter] string SigningDescription = "My REALLY COOL Library";
-    [Parameter] string SigningUrl = "https://signing.is.cool/";
-
-    [Parameter][Secret] string SignClientSecret;
-    [Parameter][Secret] string SignClientUser;
-    // Directories
-    AbsolutePath ToolsDir => RootDirectory / "tools";
+    
     AbsolutePath Output => RootDirectory / "bin";
     AbsolutePath OutputNuget => Output / "nuget";
     AbsolutePath OutputTests => RootDirectory / "TestResults";
-    AbsolutePath OutputPerfTests => RootDirectory / "PerfResults";
     AbsolutePath SourceDirectory => RootDirectory / "src";
-    AbsolutePath DocSiteDirectory => RootDirectory / "docs" / "_site";
     public string ChangelogFile => RootDirectory / "RELEASE_NOTES.md";
-    public AbsolutePath DocFxDir => RootDirectory / "docs";
-    public AbsolutePath DocFxDirJson => DocFxDir / "docfx.json";
 
     readonly Solution Solution = ProjectModelTasks.ParseSolution(RootDirectory.GlobFiles("*.sln").FirstOrDefault());
 
@@ -102,7 +83,7 @@ partial class Build : NukeBuild
         .Executes(() =>
         {
             RootDirectory
-            .GlobDirectories("src/**/bin", "src/**/obj", Output, OutputTests, OutputPerfTests, OutputNuget, DocSiteDirectory)
+            .GlobDirectories("src/**/bin", "src/**/obj", Output, OutputTests,  OutputNuget)
             .ForEach(DeleteDirectory);
             EnsureCleanDirectory(Output);
         });
@@ -146,34 +127,20 @@ partial class Build : NukeBuild
     Target PublishNuget => _ => _
     .Unlisted()
     .Description("Publishes .nuget packages to Nuget")
-    .After(CreateNuget, SignClient)
+    .After(CreateNuget)
     .OnlyWhenDynamic(() => !NugetPublishUrl.IsNullOrEmpty())
     .OnlyWhenDynamic(() => !NugetKey.IsNullOrEmpty())
     .Triggers(GitHubRelease)
     .Executes(() =>
     {
         var packages = OutputNuget.GlobFiles("*.nupkg", "*.symbols.nupkg").NotNull();
-        var shouldPublishSymbolsPackages = !string.IsNullOrWhiteSpace(SymbolsPublishUrl);
         foreach (var package in packages)
         {
-            if (shouldPublishSymbolsPackages)
-            {
-                DotNetNuGetPush(s => s
-                 .SetTimeout(TimeSpan.FromMinutes(10).Minutes)
-                 .SetTargetPath(package)
-                 .SetSource(NugetPublishUrl)
-                 .SetSymbolSource(SymbolsPublishUrl)
-                 .SetApiKey(NugetKey));
-            }
-            else
-            {
-                DotNetNuGetPush(s => s
+            DotNetNuGetPush(s => s
                   .SetTimeout(TimeSpan.FromMinutes(10).Minutes)
                   .SetTargetPath(package)
                   .SetSource(NugetPublishUrl)
                   .SetApiKey(NugetKey));
-            }
-
         }
     });
     Target AuthenticatedGitHubClient => _ => _
@@ -263,113 +230,14 @@ partial class Build : NukeBuild
                 }
             }
         });
-    Target SignClient => _ => _
-        .Unlisted()
-        .After(CreateNuget)
-        .Before(PublishNuget)
-        .OnlyWhenDynamic(() => !SignClientSecret.IsNullOrEmpty())
-        .OnlyWhenDynamic(() => !SignClientUser.IsNullOrEmpty())
-        .Executes(() =>
-        {
-            var assemblies = OutputNuget.GlobFiles("*.nupkg");
-            foreach (var asm in assemblies)
-            {
-                SignClientSign(s => s
-                .SetProcessToolPath(ToolsDir / "SignClient.exe")
-                .SetProcessLogOutput(true)
-                .SetConfig(RootDirectory / "appsettings.json")
-                .SetDescription(SigningDescription)
-                .SetDescriptionUrl(SigningUrl)
-                .SetInput(asm)
-                .SetName(SigningName)
-                .SetSecret(SignClientSecret)
-                .SetUsername(SignClientUser)
-                .SetProcessWorkingDirectory(RootDirectory)
-                .SetProcessExecutionTimeout(TimeSpan.FromMinutes(5).Minutes));
-
-                //SignClient(stringBuilder.ToString(), workingDirectory: RootDirectory, timeout: TimeSpan.FromMinutes(5).Minutes);
-            }
-        });
+   
     Target Nuget => _ => _
-        .DependsOn(CreateNuget, SignClient, PublishNuget);
-    private AbsolutePath[] GetDockerProjects()
-    {
-        return SourceDirectory.GlobFiles("**/Dockerfile")// folders with Dockerfiles in it
-            .ToArray();
-    }
-    Target PublishCode => _ => _
-        .Unlisted()
-        .Description("Publish project as release")
-        .DependsOn(RunTests)
-        .Executes(() =>
-        {
-            var dockfiles = GetDockerProjects();
-            foreach (var dockfile in dockfiles)
-            {
-                Information(dockfile.Parent.ToString());
-                var project = dockfile.Parent.GlobFiles("*.csproj").First();
-                DotNetPublish(s => s
-                .SetProject(project)
-                .SetConfiguration(Configuration.Release));
-            }
-        });
+        .DependsOn(CreateNuget, PublishNuget);
+   
     Target All => _ => _
      .Description("Executes NBench, Tests and Nuget targets/commands")
-     .DependsOn(BuildRelease, RunTests, NBench, Nuget);
-
-    Target NBench => _ => _
-     .Description("Runs all BenchMarkDotNet tests")
-     .DependsOn(Compile)
-     .Executes(() =>
-     {
-         RootDirectory
-             .GlobFiles("src/**/*.Tests.Performance.csproj")
-             .ForEach(path =>
-             {
-                 DotNetRun(s => s
-                 .SetApplicationArguments($"--no-build -c release --concurrent true --trace true --output {OutputPerfTests} --diagnostic")
-                 .SetProcessLogOutput(true)
-                 .SetProcessWorkingDirectory(Directory.GetParent(path).FullName)
-                 .SetProcessExecutionTimeout((int)TimeSpan.FromMinutes(15).TotalMilliseconds)
-                 );
-             });
-     });
-    //--------------------------------------------------------------------------------
-    // Documentation 
-    //--------------------------------------------------------------------------------
-    Target DocsInit => _ => _
-        .Unlisted()
-        .DependsOn(Compile)
-        .Executes(() =>
-        {
-            DocFXInit(s => s.SetOutputFolder(DocFxDir).SetQuiet(true));
-        });
-    Target DocsMetadata => _ => _
-        .Unlisted()
-        .Description("Create DocFx metadata")
-        .DependsOn(BuildRelease)
-        .Executes(() =>
-        {
-            DocFXMetadata(s => s
-            .SetProjects(DocFxDirJson)
-            .SetLogLevel(DocFXLogLevel.Verbose));
-        });
-
-    Target DocFx => _ => _
-        .Description("Builds Documentation")
-        .DependsOn(DocsMetadata)
-        .Executes(() =>
-        {
-            DocFXBuild(s => s
-            .SetConfigFile(DocFxDirJson)
-            .SetLogLevel(DocFXLogLevel.Verbose));
-        });
-
-    Target ServeDocs => _ => _
-        .Description("Build and preview documentation")
-        .DependsOn(DocFx)
-        .Executes(() => DocFXServe(s => s.SetFolder(DocFxDir).SetPort(Port)));
-
+     .DependsOn(BuildRelease, RunTests, Nuget);
+      
     Target Compile => _ => _
         .Description("Builds all the projects in the solution")
         .DependsOn(AssemblyInfo, Restore)
@@ -398,7 +266,6 @@ partial class Build : NukeBuild
         .Description("Install `Nuke.GlobalTool` and SignClient")
         .Executes(() =>
         {
-            DotNet($@"dotnet tool install SignClient --version 1.3.155 --tool-path ""{ToolsDir}"" ");
             DotNet($"tool install Nuke.GlobalTool --global");
         });
 
