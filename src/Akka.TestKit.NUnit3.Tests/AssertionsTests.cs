@@ -9,8 +9,9 @@ using NUnit.Framework;
 
 namespace Akka.TestKit.NUnit3.Tests
 {
-    [TestFixture]
-    public class AssertionsTests
+    //[TestFixture]
+    [Parallelizable(ParallelScope.All)]
+    public class AssertionsTests : TestKit
     {
         private readonly NUnitAssertions _assertions;
 
