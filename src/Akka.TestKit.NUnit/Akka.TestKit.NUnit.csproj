@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Akka.TestKit" Version="1.4.39" />
+    <PackageReference Include="Akka.TestKit" Version="$(AkkaTestKitVersion)" />
     <PackageReference Include="NUnit" Version="$(NUnitVersion)" />
   </ItemGroup>
 
