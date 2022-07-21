@@ -35,8 +35,6 @@ namespace Akka.TestKit.NUnit3
         public TestKit(ActorSystem system = null)
             : base(_assertions, system)
         {
-            if(system != null)
-                throw new NotSupportedException("Due to the way NUnit works, providing an ActorSystem is not supported.  For further details please see https://github.com/akkadotnet/akka.net/pull/1092");
         }
 
         /// <summary>
