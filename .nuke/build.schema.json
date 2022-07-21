@@ -65,6 +65,9 @@
           "type": "boolean",
           "description": "Shows the execution plan (HTML)"
         },
+        "Port": {
+          "type": "integer"
+        },
         "Profile": {
           "type": "array",
           "description": "Defines the profiles to load",
@@ -75,6 +78,23 @@
         "Root": {
           "type": "string",
           "description": "Root directory during build execution"
+        },
+        "SignClientSecret": {
+          "type": "string",
+          "default": "Secrets must be entered via 'nuke :secrets [profile]'"
+        },
+        "SignClientUser": {
+          "type": "string",
+          "default": "Secrets must be entered via 'nuke :secrets [profile]'"
+        },
+        "SigningDescription": {
+          "type": "string"
+        },
+        "SigningName": {
+          "type": "string"
+        },
+        "SigningUrl": {
+          "type": "string"
         },
         "Skip": {
           "type": "array",
@@ -89,14 +109,21 @@
               "Clean",
               "Compile",
               "CreateNuget",
+              "DocFx",
               "GitHubRelease",
               "Install",
+              "NBench",
               "Nuget",
               "PublishNuget",
               "Restore",
-              "RunTests"
+              "RunTests",
+              "ServeDocs",
+              "SignClient"
             ]
           }
+        },
+        "SymbolsPublishUrl": {
+          "type": "string"
         },
         "Target": {
           "type": "array",
@@ -111,12 +138,16 @@
               "Clean",
               "Compile",
               "CreateNuget",
+              "DocFx",
               "GitHubRelease",
               "Install",
+              "NBench",
               "Nuget",
               "PublishNuget",
               "Restore",
-              "RunTests"
+              "RunTests",
+              "ServeDocs",
+              "SignClient"
             ]
           }
         },
