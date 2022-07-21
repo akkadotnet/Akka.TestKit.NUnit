@@ -23,7 +23,6 @@ namespace Akka.TestKit.NUnit3
         private static readonly NUnitAssertions _assertions = new NUnitAssertions();
         private readonly Config _config;
         private readonly string _actorSystemName;
-        private bool _isFirstRun = true;
         private bool _isDisposed; //Automatically initialized to false;
 
         /// <summary>
@@ -68,24 +67,12 @@ namespace Akka.TestKit.NUnit3
         protected static NUnitAssertions Assertions { get { return _assertions; } }
 
         /// <summary>
-        /// This method is called before each test run, it initializes the test including
-        /// creating and setting up the ActorSystem.
-        /// </summary>
-        [SetUp]
-        public void InitializeActorSystemOnSetUp()
-        {
-            if (!_isFirstRun)
-                InitializeTest(null, _config, _actorSystemName, null);
-        }
-
-        /// <summary>
         /// This method is called after each test finishes, which calls
         /// into the AfterAll method.
         /// </summary>
         [TearDown]
         public void ShutDownActorSystemOnTearDown()
         {
-            _isFirstRun = false;
             AfterAll();
         }
 
