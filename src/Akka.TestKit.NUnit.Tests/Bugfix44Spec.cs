@@ -12,16 +12,20 @@ public class Bugfix44Spec : TestKit
         
     }
     
-    [Test]
+    private static ActorSystem _previousSystem;
+    
+    [Test, Order(1)]
     public void Should_use_provided_ActorSystem()
     {
+        _previousSystem = Sys;
         Assertions.AssertEqual("Foo",Sys.Name);
     }
     
-    [Test]
+    [Test, Order(2)]
     public void Should_use_provided_ActorSystem_again()
     {
         // Technically this will be a second, different ActorSystem but the names should be the same
         Assertions.AssertEqual("Foo",Sys.Name);
+        Assertions.AssertFalse(_previousSystem.Equals(Sys));
     }
 }
