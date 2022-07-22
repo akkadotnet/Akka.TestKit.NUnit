@@ -23,7 +23,6 @@ namespace Akka.TestKit.NUnit
         private static readonly NUnitAssertions _assertions = new NUnitAssertions();
         private readonly Config _config;
         private readonly string _actorSystemName;
-        private bool _isFirstRun = true;
         private bool _isDisposed; //Automatically initialized to false;
 
         /// <summary>
@@ -35,8 +34,6 @@ namespace Akka.TestKit.NUnit
         public TestKit(ActorSystem system = null)
             : base(_assertions, system)
         {
-            if(system != null)
-                throw new NotSupportedException("Due to the way NUnit works, providing an ActorSystem is not supported.  For further details please see https://github.com/akkadotnet/akka.net/pull/1092");
         }
 
         /// <summary>
@@ -68,18 +65,7 @@ namespace Akka.TestKit.NUnit
         public new static Config FullDebugConfig { get { return TestKitBase.FullDebugConfig; } }
 
         protected static NUnitAssertions Assertions { get { return _assertions; } }
-
-        /// <summary>
-        /// This method is called before each test run, it initializes the test including
-        /// creating and setting up the ActorSystem.
-        /// </summary>
-        [SetUp]
-        public void InitializeActorSystemOnSetUp()
-        {
-            if (!_isFirstRun)
-                InitializeTest(null, _config, _actorSystemName, null);
-        }
-
+        
         /// <summary>
         /// This method is called after each test finishes, which calls
         /// into the AfterAll method.
@@ -87,7 +73,6 @@ namespace Akka.TestKit.NUnit
         [TearDown]
         public void ShutDownActorSystemOnTearDown()
         {
-            _isFirstRun = false;
             AfterAll();
         }
 

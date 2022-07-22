@@ -11,7 +11,6 @@ using NUnit.Framework;
 
 namespace Akka.TestKit.NUnit3.Tests
 {
-    //[TestFixture]
     [Parallelizable(ParallelScope.All)]
     public class TestKitTestFixtureTest : TestKit
     {
