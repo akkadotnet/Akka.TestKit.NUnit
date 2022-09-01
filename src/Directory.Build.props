@@ -18,6 +18,6 @@
 	<PropertyGroup>
 		<NUnitVersion>3.13.3</NUnitVersion>
 		<NUnitAdapterVersion>4.2.1</NUnitAdapterVersion>
-		<AkkaTestKitVersion>1.4.39</AkkaTestKitVersion>
+		<AkkaTestKitVersion>1.4.41</AkkaTestKitVersion>
 	</PropertyGroup>
 </Project>
