@@ -17,7 +17,7 @@
 	</PropertyGroup>
 	<PropertyGroup>
 		<NUnitVersion>3.13.3</NUnitVersion>
-		<NUnitAdapterVersion>4.3.1</NUnitAdapterVersion>
+		<NUnitAdapterVersion>4.4.0</NUnitAdapterVersion>
 		<AkkaTestKitVersion>1.4.47</AkkaTestKitVersion>
 	</PropertyGroup>
 </Project>
