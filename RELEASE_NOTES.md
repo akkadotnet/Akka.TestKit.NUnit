@@ -1,3 +1,6 @@
+## [1.5.0] / March 2 2023
+- [Akka.NET 1.5.0][https://github.com/akkadotnet/Akka.TestKit.NUnit/pull/82]
+
 ## [1.4.39] / July 22 2022
  - Support for Akka 1.4.39
  - Support for NUnit 3.13.3
