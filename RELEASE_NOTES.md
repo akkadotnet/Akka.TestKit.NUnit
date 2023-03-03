@@ -1,5 +1,5 @@
-## [1.5.0] / March 2 2023
-- [Akka.NET 1.5.0][https://github.com/akkadotnet/Akka.TestKit.NUnit/pull/82]
+## [1.5.0] / March 3 2023
+- [Bump Akka.NET to 1.5.0](https://github.com/akkadotnet/akka.net/releases/tag/1.5.0)
 
 ## [1.4.39] / July 22 2022
  - Support for Akka 1.4.39
