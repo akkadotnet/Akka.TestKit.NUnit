@@ -1,4 +1,4 @@
-﻿<Project>
+<Project>
 	<PropertyGroup>
 		<Copyright>Copyright © 2013-2022</Copyright>
 		<Authors>Akka.NET Contrib</Authors>
@@ -18,6 +18,6 @@
 	<PropertyGroup>
 		<NUnitVersion>3.13.3</NUnitVersion>
 		<NUnitAdapterVersion>4.4.2</NUnitAdapterVersion>
-		<AkkaTestKitVersion>1.5.0</AkkaTestKitVersion>
+		<AkkaTestKitVersion>1.5.2</AkkaTestKitVersion>
 	</PropertyGroup>
 </Project>
