@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="Akka.TestKit" Version="$(AkkaTestKitVersion)" />
-    <PackageReference Include="NUnit" Version="$(NUnitVersion)" />
+    <PackageReference Include="NUnit" Version="$(NUnitV3Version)" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
