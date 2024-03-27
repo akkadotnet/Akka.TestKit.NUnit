@@ -16,7 +16,7 @@
 		<NoWarn>$(NoWarn);CS1591</NoWarn>
 	</PropertyGroup>
 	<PropertyGroup>
-		<NUnitV3Version>3.13.3</NUnitV3Version>
+		<NUnitV3Version>3.14.0</NUnitV3Version>
 		<NUnitV3AdapterVersion>4.5.0</NUnitV3AdapterVersion>
 		<AkkaTestKitVersion>1.5.7</AkkaTestKitVersion>
 	</PropertyGroup>
