@@ -20,6 +20,10 @@
 		<NUnitV3AdapterVersion>4.5.0</NUnitV3AdapterVersion>
 	</PropertyGroup>
 	<PropertyGroup>
+		<NUnitVersion>4.1.0</NUnitVersion>
+		<NUnitAdapterVersion>4.5.0</NUnitAdapterVersion>
+	</PropertyGroup>
+	<PropertyGroup>
 		<AkkaTestKitVersion>1.5.7</AkkaTestKitVersion>
 	</PropertyGroup>
 </Project>
