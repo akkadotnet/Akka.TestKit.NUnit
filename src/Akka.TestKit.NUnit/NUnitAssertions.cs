@@ -19,7 +19,7 @@ namespace Akka.TestKit.NUnit
         
         public void Fail(string format = "", params object[] args)
         {
-            ClassicAssert.Fail(format, args);
+            ClassicAssert.Fail(string.Format(format, args));
         }
 
         public void AssertTrue(bool condition, string format = "", params object[] args)
