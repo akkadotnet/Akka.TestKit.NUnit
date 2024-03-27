@@ -19,17 +19,17 @@ namespace Akka.TestKit.NUnit
         
         public void Fail(string format = "", params object[] args)
         {
-            ClassicAssert.Fail(string.Format(format, args));
+            Assert.Fail(string.Format(format, args));
         }
 
         public void AssertTrue(bool condition, string format = "", params object[] args)
         {
-            ClassicAssert.IsTrue(condition, format, args);
+            Assert.That(condition, Is.True, string.Format(format, args));
         }
 
         public void AssertFalse(bool condition, string format = "", params object[] args)
         {
-            ClassicAssert.IsFalse(condition, format, args);
+            Assert.That(condition, Is.False, string.Format(format, args));
         }
 
         public void AssertEqual<T>(T expected, T actual, string format = "", params object[] args)
