@@ -7,6 +7,7 @@
 
 using System;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Akka.TestKit.NUnit
 {
@@ -18,22 +19,22 @@ namespace Akka.TestKit.NUnit
         
         public void Fail(string format = "", params object[] args)
         {
-            Assert.Fail(format, args);
+            ClassicAssert.Fail(format, args);
         }
 
         public void AssertTrue(bool condition, string format = "", params object[] args)
         {
-            Assert.IsTrue(condition, format, args);
+            ClassicAssert.IsTrue(condition, format, args);
         }
 
         public void AssertFalse(bool condition, string format = "", params object[] args)
         {
-            Assert.IsFalse(condition, format, args);
+            ClassicAssert.IsFalse(condition, format, args);
         }
 
         public void AssertEqual<T>(T expected, T actual, string format = "", params object[] args)
         {
-            Assert.AreEqual(expected, actual, format, args);
+            ClassicAssert.AreEqual(expected, actual, format, args);
         }
 
         public void AssertEqual<T>(T expected, T actual, Func<T, T, bool> comparer, string format = "", params object[] args)
