@@ -34,7 +34,7 @@ namespace Akka.TestKit.NUnit
 
         public void AssertEqual<T>(T expected, T actual, string format = "", params object[] args)
         {
-            ClassicAssert.AreEqual(expected, actual, format, args);
+            Assert.That(actual, Is.EqualTo(expected), string.Format(format, args));
         }
 
         public void AssertEqual<T>(T expected, T actual, Func<T, T, bool> comparer, string format = "", params object[] args)
