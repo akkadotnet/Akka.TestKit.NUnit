@@ -19,6 +19,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		RELEASE_NOTES.md = RELEASE_NOTES.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akka.TestKit.NUnit4", "src\Akka.TestKit.NUnit4\Akka.TestKit.NUnit4.csproj", "{B522214E-5084-4D40-8C52-7AD72B7EA71C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Akka.TestKit.NUnit4.Tests", "src\Akka.TestKit.NUnit4.Tests\Akka.TestKit.NUnit4.Tests.csproj", "{D10E81B1-DED5-46CB-8FF5-AA40D755B75B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +47,14 @@ Global
 		{FF91B397-1E60-4B94-99A1-B534C7BB91A5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{637FF340-E344-4119-8E64-FE105974B754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{637FF340-E344-4119-8E64-FE105974B754}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B522214E-5084-4D40-8C52-7AD72B7EA71C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B522214E-5084-4D40-8C52-7AD72B7EA71C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B522214E-5084-4D40-8C52-7AD72B7EA71C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B522214E-5084-4D40-8C52-7AD72B7EA71C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D10E81B1-DED5-46CB-8FF5-AA40D755B75B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D10E81B1-DED5-46CB-8FF5-AA40D755B75B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D10E81B1-DED5-46CB-8FF5-AA40D755B75B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D10E81B1-DED5-46CB-8FF5-AA40D755B75B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
