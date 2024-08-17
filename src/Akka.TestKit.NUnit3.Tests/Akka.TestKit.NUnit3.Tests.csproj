@@ -2,7 +2,8 @@
 	
   <PropertyGroup>
     <AssemblyTitle>Akka.TestKit.NUnit3.Tests</AssemblyTitle>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net462</TargetFrameworks>
+    <LangVersion>10</LangVersion>
   </PropertyGroup>
  
   <ItemGroup>
@@ -11,8 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
-    <PackageReference Include="NUnit" Version="$(NUnitVersion)" />
-    <PackageReference Include="NUnit3TestAdapter" Version="$(NUnitAdapterVersion)" />
+    <PackageReference Include="NUnit" Version="$(NUnitV3Version)" />
+    <PackageReference Include="NUnit3TestAdapter" Version="$(NUnitV3AdapterVersion)" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
