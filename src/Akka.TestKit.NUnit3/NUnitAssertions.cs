@@ -40,13 +40,7 @@ namespace Akka.TestKit.NUnit3
 
         public void AssertEqual<T>(T expected, T actual, Func<T, T, bool> comparer, string format = "", params object[] args)
         {
-            if (!comparer(expected, actual))
-                throw new AssertionException($"Assert.AreEqual failed. Expected [{FormatValue(expected)}]. Actual [{FormatValue(actual)}]. {string.Format(format, args)}");
-        }
-
-        private static string FormatValue<T>(T expected)
-        {
-            return ReferenceEquals(expected, null) ? "null" : expected.ToString();
+            Assert.That(actual, Is.EqualTo(expected).Using<T>(comparer), format, args);
         }
     }
 }
