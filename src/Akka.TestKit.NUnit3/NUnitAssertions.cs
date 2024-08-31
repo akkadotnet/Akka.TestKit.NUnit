@@ -8,6 +8,8 @@
 using System;
 using NUnit.Framework;
 
+#pragma warning disable NUnit2050 // NUnit 4 no longer supports string.Format specification
+
 namespace Akka.TestKit.NUnit3
 {
     /// <summary>
@@ -23,17 +25,17 @@ namespace Akka.TestKit.NUnit3
 
         public void AssertTrue(bool condition, string format = "", params object[] args)
         {
-            Assert.IsTrue(condition, format, args);
+            Assert.That(condition, Is.True, format, args);
         }
 
         public void AssertFalse(bool condition, string format = "", params object[] args)
         {
-            Assert.IsFalse(condition, format, args);
+            Assert.That(condition, Is.False, format, args);
         }
 
         public void AssertEqual<T>(T expected, T actual, string format = "", params object[] args)
         {
-            Assert.AreEqual(expected, actual, format, args);
+            Assert.That(actual, Is.EqualTo(expected), format, args);
         }
 
         public void AssertEqual<T>(T expected, T actual, Func<T, T, bool> comparer, string format = "", params object[] args)
