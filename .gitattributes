@@ -1,7 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-
 # Custom for Visual Studio
 *.cs     diff=csharp
 *.sln    merge=union
@@ -29,3 +28,6 @@
 *.txt text eol=crlf
 
 build.sh eol=lf
+
+# Binary files (no newline adjustment)
+*.png    binary
