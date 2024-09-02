@@ -1,17 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyTitle>Akka.TestKit.NUnit</AssemblyTitle>
+    <!-- Matches frameworks targeted by NUnit 4.x.x. -->
     <TargetFrameworks>net6.0;net462</TargetFrameworks>
-    <IsPackable>true</IsPackable> 
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Akka.TestKit" Version="$(AkkaTestKitVersion)" />
-    <PackageReference Include="NUnit" Version="$(NUnitVersion)" />
-    <PackageReference Include="NUnit.Analyzers" Version="$(NUnitAnalyzersVersion)" />
+    <PackageReference Include="NUnit" Version="4.2.2" />
   </ItemGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
-  </PropertyGroup>
 </Project>

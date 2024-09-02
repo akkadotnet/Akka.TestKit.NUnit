@@ -1,22 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	
   <PropertyGroup>
-    <AssemblyTitle>Akka.TestKit.NUnit3.Tests</AssemblyTitle>
     <TargetFrameworks>net6.0;net462</TargetFrameworks>
-    <LangVersion>10</LangVersion>
   </PropertyGroup>
- 
-  <ItemGroup>
-    <ProjectReference Include="..\Akka.TestKit.NUnit3\Akka.TestKit.NUnit3.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
-    <PackageReference Include="NUnit" Version="$(NUnitV3Version)" />
-    <PackageReference Include="NUnit3TestAdapter" Version="$(NUnitV3AdapterVersion)" />
+    <ProjectReference Include="../Akka.TestKit.NUnit3/Akka.TestKit.NUnit3.csproj" />
   </ItemGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
-  </PropertyGroup>
 </Project>
