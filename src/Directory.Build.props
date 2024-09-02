@@ -3,8 +3,9 @@
     <Copyright>Copyright © 2013-$([System.DateTime]::Now.Year)</Copyright>
     <Authors>Akka.NET Contrib</Authors>
     <Description>TestKit for writing tests for Akka.NET using NUnit.</Description>
-    <VersionPrefix>1.5.0</VersionPrefix>
-    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../RELEASE_NOTES.md"))</PackageReleaseNotes>
+    <VersionPrefix>1.6.0</VersionPrefix>
+    <VersionSuffix>preview.1</VersionSuffix>
+    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../RELEASE_NOTES.md").Substring(0,569))</PackageReleaseNotes>
     <PackageTags>akka;actors;actor model;Akka;concurrency;testkit;nunit</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageIcon>akka.png</PackageIcon><!-- https://github.com/NuGet/Home/wiki/Packaging-Icon-within-the-nupkg -->
