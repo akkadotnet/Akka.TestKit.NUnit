@@ -9,7 +9,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageIcon>akka.png</PackageIcon><!-- https://github.com/NuGet/Home/wiki/Packaging-Icon-within-the-nupkg -->
     <PackageProjectUrl>https://github.com/AkkaNetContrib/Akka.TestKit.Nunit</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/AkkaNetContrib/Akka.TestKit.Nunit</PackageLicenseUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile><!-- https://devblogs.microsoft.com/nuget/add-a-readme-to-your-nuget-package/ -->
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <ContinuousIntegrationBuild Condition=" '$(Configuration)' == 'Release' ">true</ContinuousIntegrationBuild><!-- https://learn.microsoft.com/en-us/dotnet/core/project-sdk/msbuild-props#continuousintegrationbuild -->
