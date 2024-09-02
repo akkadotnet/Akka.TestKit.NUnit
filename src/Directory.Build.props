@@ -4,16 +4,18 @@
     <Authors>Akka.NET Contrib</Authors>
     <Description>TestKit for writing tests for Akka.NET using NUnit.</Description>
     <VersionPrefix>1.5.0</VersionPrefix>
-    <PackageReleaseNotes> • Support for Akka 1.4.39
- • Support for NUnit 3.13.3
- • Now targets netstandard2.0
- • All TestKit classes now implement [FixtureLifeCycle(LifeCycle.InstancePerTestCase)] which guarantees a unique ActorSystem instance per-run. All previous TestKit hacks needed to support this are now removed. See https://github.com/akkadotnet/Akka.TestKit.NUnit/issues/44 for details.</PackageReleaseNotes>
+    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../RELEASE_NOTES.md"))</PackageReleaseNotes>
     <PackageTags>akka;actors;actor model;Akka;concurrency;testkit;nunit</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageIconUrl>http://getakka.net/images/akkalogo.png</PackageIconUrl>
     <PackageProjectUrl>https://github.com/AkkaNetContrib/Akka.TestKit.Nunit</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/AkkaNetContrib/Akka.TestKit.Nunit</PackageLicenseUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile><!-- https://devblogs.microsoft.com/nuget/add-a-readme-to-your-nuget-package/ -->
     <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <ContinuousIntegrationBuild Condition=" '$(Configuration)' == 'Release' ">true</ContinuousIntegrationBuild><!-- https://learn.microsoft.com/en-us/dotnet/core/project-sdk/msbuild-props#continuousintegrationbuild -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder><!-- https://learn.microsoft.com/en-us/dotnet/standard/library-guidance/nuget#symbol-packages -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources><!-- https://github.com/dotnet/sourcelink/blob/main/docs/README.md#embeduntrackedsources -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl><!-- https://github.com/dotnet/sourcelink/blob/main/docs/README.md#publishrepositoryurl -->
   </PropertyGroup>
   <PropertyGroup>
     <NUnitV3Version>3.14.0</NUnitV3Version>
