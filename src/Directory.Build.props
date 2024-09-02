@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <Copyright>Copyright © 2013-2022</Copyright>
+    <Copyright>Copyright © 2013-$([System.DateTime]::Now.Year)</Copyright>
     <Authors>Akka.NET Contrib</Authors>
     <Description>TestKit for writing tests for Akka.NET using NUnit.</Description>
     <VersionPrefix>1.5.0</VersionPrefix>
