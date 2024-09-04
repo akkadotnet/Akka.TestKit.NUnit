@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.14.0" />
+    <PackageReference Include="Akka.TestKit" Version="$(AkkaTestKitVersion)" />
+    <PackageReference Include="NUnit.Analyzers" Version="$(NUnitAnalyzersVersion)" PrivateAssets="all" /><!-- ensure we follow NUnit best practices; "PrivateAssets" is needed to not include analyzers as dependencies in ".nupkg" -->
+    <PackageReference Include="NUnit" Version="$(NUnit3Version)" />
   </ItemGroup>
 </Project>

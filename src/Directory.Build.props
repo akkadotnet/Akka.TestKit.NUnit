@@ -13,39 +13,31 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile><!-- https://devblogs.microsoft.com/nuget/add-a-readme-to-your-nuget-package/ -->
     <NoWarn>$(NoWarn);CS1591</NoWarn>
-    <IsTestsProject>false</IsTestsProject>
-    <IsTestsProject Condition=" $(MSBuildProjectName.EndsWith('.Tests')) ">true</IsTestsProject>
     <LangVersion>10.0</LangVersion>
     <ContinuousIntegrationBuild Condition=" '$(Configuration)' == 'Release' ">true</ContinuousIntegrationBuild><!-- https://learn.microsoft.com/en-us/dotnet/core/project-sdk/msbuild-props#continuousintegrationbuild -->
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder><!-- https://learn.microsoft.com/en-us/dotnet/standard/library-guidance/nuget#symbol-packages -->
     <EmbedUntrackedSources>true</EmbedUntrackedSources><!-- https://github.com/dotnet/sourcelink/blob/main/docs/README.md#embeduntrackedsources -->
     <PublishRepositoryUrl>true</PublishRepositoryUrl><!-- https://github.com/dotnet/sourcelink/blob/main/docs/README.md#publishrepositoryurl -->
   </PropertyGroup>
+  <PropertyGroup>
+    <AkkaTestKitVersion>1.5.27.1</AkkaTestKitVersion>
+    <MicrosoftNetTestSdkVersion>17.11.0</MicrosoftNetTestSdkVersion>
+    <NUnit3Version>3.14.0</NUnit3Version>
+    <NUnit4Version>4.2.2</NUnit4Version>
+    <NUnitAnalyzersVersion>4.3.0</NUnitAnalyzersVersion>
+    <NUnitTestAdapterVersion>4.6.0</NUnitTestAdapterVersion>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
   </PropertyGroup>
-  <ItemGroup>
-    <!--
-    Include NUnit analyzers in all projects. They ensure we follow NUnit best
-    practices in implementations of "ITestKitAssertions" as well as in tests
-    that verify those implementations.
-
-    "PrivateAssets" is needed to not include analyzers as dependencies in ".nupkg". -->
-    <PackageReference Include="NUnit.Analyzers" Version="4.3.0" PrivateAssets="all" />
-  </ItemGroup>
   <ItemGroup Condition=" $(IsPackable) ">
-    <PackageReference Include="Akka.TestKit" Version="1.5.27.1" /><!-- Include Akka.TestKit dependency in packable projects. -->
-    <None Include="../../README.md" Pack="true" Visible="false" PackagePath="" /><!-- Referenced by "PackageReadmeFile" property. -->
+    <!-- Referenced by "PackageReadmeFile" property. -->
+    <None Include="../../README.md" Pack="true" Visible="false" PackagePath="" />
     <!--
 
     Based on the following (official) NuGet example:
     https://github.com/NuGet/Samples/blob/master/PackageIconExample/PackageIconExample.csproj
     (note that image path is relative to .csproj file, not this .props file) -->
     <None Include="../akka.png" Pack="true" Visible="false" PackagePath="" />
-  </ItemGroup>
-  <ItemGroup Condition=" $(IsTestsProject) ">
-    <!-- Standard packages needed to run NUnit tests in ".Tests" projects using "dotnet test". -->
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
   </ItemGroup>
 </Project>
