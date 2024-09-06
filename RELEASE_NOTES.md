@@ -1,6 +1,6 @@
 ## [1.6.0] / September 2024
 
-- Bump `Akka.TestKit` to [1.5.27.1](https://github.com/akkadotnet/akka.net/releases/tag/1.5.27.1)
+- Bump `Akka.TestKit` to [1.5.28](https://github.com/akkadotnet/akka.net/releases/tag/1.5.28)
 - Bump `NUnit3TestAdapter` to [4.6.0](https://github.com/nunit/nunit3-vs-adapter/releases/tag/V4.6.0)
 - Add `NUnit.Analyzers` version [4.3.0](https://github.com/nunit/nunit.analyzers/releases/tag/4.3.0) to ensure we follow NUnit best practices.
 - Add support for [NUnit 4.2.2](https://github.com/nunit/nunit/releases/tag/4.2.2) in addition to NUnit 3.

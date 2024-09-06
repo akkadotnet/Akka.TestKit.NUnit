@@ -5,7 +5,7 @@
     <Description>TestKit for writing tests for Akka.NET using NUnit.</Description>
     <VersionPrefix>1.6.0</VersionPrefix>
     <VersionSuffix>preview.1</VersionSuffix>
-    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../RELEASE_NOTES.md").Substring(0,569))</PackageReleaseNotes>
+    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../RELEASE_NOTES.md").Substring(0,567))</PackageReleaseNotes>
     <PackageTags>akka;actors;actor model;Akka;concurrency;testkit;nunit</PackageTags>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageIcon>akka.png</PackageIcon><!-- https://github.com/NuGet/Home/wiki/Packaging-Icon-within-the-nupkg -->
@@ -20,8 +20,8 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl><!-- https://github.com/dotnet/sourcelink/blob/main/docs/README.md#publishrepositoryurl -->
   </PropertyGroup>
   <PropertyGroup>
-    <AkkaTestKitVersion>1.5.27.1</AkkaTestKitVersion>
-    <MicrosoftNetTestSdkVersion>17.11.0</MicrosoftNetTestSdkVersion>
+    <AkkaTestKitVersion>1.5.28</AkkaTestKitVersion>
+    <MicrosoftNetTestSdkVersion>17.11.1</MicrosoftNetTestSdkVersion>
     <NUnit3Version>3.14.0</NUnit3Version>
     <NUnit4Version>4.2.2</NUnit4Version>
     <NUnitAnalyzersVersion>4.3.0</NUnitAnalyzersVersion>
