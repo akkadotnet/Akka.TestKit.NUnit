@@ -4,7 +4,7 @@
 - Bump `NUnit3TestAdapter` to [4.6.0](https://github.com/nunit/nunit3-vs-adapter/releases/tag/V4.6.0)
 - Add `NUnit.Analyzers` version [4.3.0](https://github.com/nunit/nunit.analyzers/releases/tag/4.3.0) to ensure we follow NUnit best practices.
 - Add support for [NUnit 4.2.2](https://github.com/nunit/nunit/releases/tag/4.2.2) in addition to NUnit 3.
-   `Akka.TestKit.NUnit` targets NUnit 4, while `Akka.TestKit.NUnit` targets NUnit 3.
+   `Akka.TestKit.NUnit` targets NUnit 4, while `Akka.TestKit.NUnit3` targets NUnit 3.
 
 ## [1.5.24] / June 11 2024
 
