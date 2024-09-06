@@ -1,17 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <AssemblyTitle>Akka.TestKit.NUnit</AssemblyTitle>
+    <!--
+    NUnit 3.x.x targets "net35;net40;net45;netstandard2.0", but we have to exclude
+    frameworks not supported by "Akka.TestKit". -->
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <IsPackable>true</IsPackable> 
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Akka.TestKit" Version="$(AkkaTestKitVersion)" />
-    <PackageReference Include="NUnit" Version="$(NUnitVersion)" />
+    <PackageReference Include="NUnit.Analyzers" Version="$(NUnitAnalyzersVersion)" PrivateAssets="all" /><!-- ensure we follow NUnit best practices; "PrivateAssets" is needed to not include analyzers as dependencies in ".nupkg" -->
+    <PackageReference Include="NUnit" Version="$(NUnit3Version)" />
   </ItemGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
-  </PropertyGroup>
 </Project>

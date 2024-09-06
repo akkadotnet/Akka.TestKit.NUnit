@@ -18,33 +18,27 @@ namespace Akka.TestKit.NUnit
         
         public void Fail(string format = "", params object[] args)
         {
-            Assert.Fail(format, args);
+            Assert.Fail(string.Format(format, args));
         }
 
         public void AssertTrue(bool condition, string format = "", params object[] args)
         {
-            Assert.IsTrue(condition, format, args);
+            Assert.That(condition, Is.True, string.Format(format, args));
         }
 
         public void AssertFalse(bool condition, string format = "", params object[] args)
         {
-            Assert.IsFalse(condition, format, args);
+            Assert.That(condition, Is.False, string.Format(format, args));
         }
 
         public void AssertEqual<T>(T expected, T actual, string format = "", params object[] args)
         {
-            Assert.AreEqual(expected, actual, format, args);
+            Assert.That(actual, Is.EqualTo(expected), string.Format(format, args));
         }
 
         public void AssertEqual<T>(T expected, T actual, Func<T, T, bool> comparer, string format = "", params object[] args)
         {
-            if (!comparer(expected, actual))
-                throw new AssertionException($"Assert.AreEqual failed. Expected [{FormatValue(expected)}]. Actual [{FormatValue(actual)}]. {string.Format(format, args)}");
-        }
-
-        private static string FormatValue<T>(T expected)
-        {
-            return ReferenceEquals(expected, null) ? "null" : expected.ToString();
+            Assert.That(actual, Is.EqualTo(expected).Using<T>(comparer), string.Format(format, args));
         }
     }
 }

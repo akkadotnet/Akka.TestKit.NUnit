@@ -1,21 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	
   <PropertyGroup>
-    <AssemblyTitle>Akka.TestKit.NUnit3.Tests</AssemblyTitle>
-    <TargetFrameworks>net6.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net462</TargetFrameworks>
   </PropertyGroup>
- 
-  <ItemGroup>
-    <ProjectReference Include="..\Akka.TestKit.NUnit3\Akka.TestKit.NUnit3.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
-    <PackageReference Include="NUnit" Version="$(NUnitVersion)" />
-    <PackageReference Include="NUnit3TestAdapter" Version="$(NUnitAdapterVersion)" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftNetTestSdkVersion)" PrivateAssets="all" />
+    <PackageReference Include="NUnit.Analyzers" Version="$(NUnitAnalyzersVersion)" PrivateAssets="all" />
+    <PackageReference Include="NUnit3TestAdapter" Version="$(NUnitTestAdapterVersion)" PrivateAssets="all" />
+    <ProjectReference Include="../Akka.TestKit.NUnit3/Akka.TestKit.NUnit3.csproj" />
   </ItemGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
-  </PropertyGroup>
 </Project>

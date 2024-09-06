@@ -1,23 +1,43 @@
 <Project>
-	<PropertyGroup>
-		<Copyright>Copyright © 2013-2022</Copyright>
-		<Authors>Akka.NET Contrib</Authors>
-		<Description>TestKit for writing tests for Akka.NET using NUnit.</Description>
-		<VersionPrefix>1.5.0</VersionPrefix>
-		<PackageReleaseNotes> • Support for Akka 1.4.39
- • Support for NUnit 3.13.3
- • Now targets netstandard2.0
- • All TestKit classes now implement [FixtureLifeCycle(LifeCycle.InstancePerTestCase)] which guarantees a unique ActorSystem instance per-run. All previous TestKit hacks needed to support this are now removed. See https://github.com/akkadotnet/Akka.TestKit.NUnit/issues/44 for details.</PackageReleaseNotes>
-		<PackageTags>akka;actors;actor model;Akka;concurrency;testkit;nunit</PackageTags>
-		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<PackageIconUrl>http://getakka.net/images/akkalogo.png</PackageIconUrl>
-		<PackageProjectUrl>https://github.com/AkkaNetContrib/Akka.TestKit.Nunit</PackageProjectUrl>
-		<PackageLicenseUrl>https://github.com/AkkaNetContrib/Akka.TestKit.Nunit</PackageLicenseUrl>
-		<NoWarn>$(NoWarn);CS1591</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup>
-		<NUnitVersion>3.14.0</NUnitVersion>
-		<NUnitAdapterVersion>4.5.0</NUnitAdapterVersion>
-		<AkkaTestKitVersion>1.5.26</AkkaTestKitVersion>
-	</PropertyGroup>
+  <PropertyGroup>
+    <Copyright>Copyright © 2013-$([System.DateTime]::Now.Year)</Copyright>
+    <Authors>Akka.NET Contrib</Authors>
+    <Description>TestKit for writing tests for Akka.NET using NUnit.</Description>
+    <VersionPrefix>1.6.0</VersionPrefix>
+    <VersionSuffix>preview.1</VersionSuffix>
+    <PackageReleaseNotes>$([System.IO.File]::ReadAllText("$(MSBuildProjectDirectory)/../../RELEASE_NOTES.md").Substring(0,567))</PackageReleaseNotes>
+    <PackageTags>akka;actors;actor model;Akka;concurrency;testkit;nunit</PackageTags>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageIcon>akka.png</PackageIcon><!-- https://github.com/NuGet/Home/wiki/Packaging-Icon-within-the-nupkg -->
+    <PackageProjectUrl>https://github.com/AkkaNetContrib/Akka.TestKit.Nunit</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile><!-- https://devblogs.microsoft.com/nuget/add-a-readme-to-your-nuget-package/ -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <LangVersion>10.0</LangVersion>
+    <ContinuousIntegrationBuild Condition=" '$(Configuration)' == 'Release' ">true</ContinuousIntegrationBuild><!-- https://learn.microsoft.com/en-us/dotnet/core/project-sdk/msbuild-props#continuousintegrationbuild -->
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder><!-- https://learn.microsoft.com/en-us/dotnet/standard/library-guidance/nuget#symbol-packages -->
+    <EmbedUntrackedSources>true</EmbedUntrackedSources><!-- https://github.com/dotnet/sourcelink/blob/main/docs/README.md#embeduntrackedsources -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl><!-- https://github.com/dotnet/sourcelink/blob/main/docs/README.md#publishrepositoryurl -->
+  </PropertyGroup>
+  <PropertyGroup>
+    <AkkaTestKitVersion>1.5.28</AkkaTestKitVersion>
+    <MicrosoftNetTestSdkVersion>17.11.1</MicrosoftNetTestSdkVersion>
+    <NUnit3Version>3.14.0</NUnit3Version>
+    <NUnit4Version>4.2.2</NUnit4Version>
+    <NUnitAnalyzersVersion>4.3.0</NUnitAnalyzersVersion>
+    <NUnitTestAdapterVersion>4.6.0</NUnitTestAdapterVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition=" $(IsPackable) ">
+    <!-- Referenced by "PackageReadmeFile" property. -->
+    <None Include="../../README.md" Pack="true" Visible="false" PackagePath="" />
+    <!--
+
+    Based on the following (official) NuGet example:
+    https://github.com/NuGet/Samples/blob/master/PackageIconExample/PackageIconExample.csproj
+    (note that image path is relative to .csproj file, not this .props file) -->
+    <None Include="../akka.png" Pack="true" Visible="false" PackagePath="" />
+  </ItemGroup>
 </Project>
