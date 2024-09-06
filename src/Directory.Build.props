@@ -22,7 +22,7 @@
   <PropertyGroup>
     <AkkaTestKitVersion>1.5.28</AkkaTestKitVersion>
     <MicrosoftNetTestSdkVersion>17.11.1</MicrosoftNetTestSdkVersion>
-    <NUnit3Version>3.14.0</NUnit3Version>
+    <NUnit3Version>4.2.2</NUnit3Version>
     <NUnit4Version>4.2.2</NUnit4Version>
     <NUnitAnalyzersVersion>4.3.0</NUnitAnalyzersVersion>
     <NUnitTestAdapterVersion>4.6.0</NUnitTestAdapterVersion>
