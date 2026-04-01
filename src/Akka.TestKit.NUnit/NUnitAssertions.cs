@@ -6,6 +6,7 @@
 //-----------------------------------------------------------------------
 
 using System;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace Akka.TestKit.NUnit
@@ -38,6 +39,26 @@ namespace Akka.TestKit.NUnit
         public void AssertEqual<T>(T expected, T actual, Func<T, T, bool> comparer, string format = "", params object[] args)
         {
             Assert.That(actual, Is.EqualTo(expected).Using<T>(comparer), NUnitAssertBase.ConvertMessageWithArgs(format, args));
+        }
+
+        public Exception AssertThrows(Action action)
+        {
+            return Assert.Throws<Exception>(() => action());
+        }
+
+        public TException AssertThrows<TException>(Action action) where TException : Exception
+        {
+            return Assert.Throws<TException>(() => action());
+        }
+
+        public Task<Exception> AssertThrowsAsync(Func<Task> action)
+        {
+            return Task.FromResult(Assert.ThrowsAsync<Exception>(() => action()));
+        }
+
+        public Task<TException> AssertThrowsAsync<TException>(Func<Task> action) where TException : Exception
+        {
+            return Task.FromResult(Assert.ThrowsAsync<TException>(() => action()));
         }
 
         /// <remarks>
