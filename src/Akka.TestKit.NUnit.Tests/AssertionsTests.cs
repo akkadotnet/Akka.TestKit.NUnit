@@ -5,6 +5,8 @@
 // </copyright>
 //----------------------------------------------------------------------
 
+using System;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace Akka.TestKit.NUnit.Tests
@@ -91,6 +93,69 @@ namespace Akka.TestKit.NUnit.Tests
                     code: () => _assertions.AssertEqual(4, 2, (_, _) => false, testMessage),
                     constraint: Throws.Exception.TypeOf<AssertionException>().And.Message.Contains(testMessage));
             });
+        }
+
+        [Test]
+        public void AssertThrows_should_succeed_when_exception_is_thrown()
+        {
+            _assertions.AssertThrows(() => throw new Exception("Test exception"));
+        }
+
+        [Test]
+        public void AssertThrows_should_throw_when_no_exception_is_thrown()
+        {
+            Assert.Throws<AssertionException>(() => _assertions.AssertThrows(() => {}));
+        }
+
+        [Test]
+        public void AssertThrows_should_succeed_when_typed_exception_is_thrown()
+        {
+            _assertions.AssertThrows<InvalidOperationException>(() => throw new InvalidOperationException("Test exception"));
+        }
+
+        [Test]
+        public void AssertThrows_should_throw_when_no_typed_exception_is_thrown()
+        {
+            Assert.Throws<AssertionException>(() => _assertions.AssertThrows<InvalidOperationException>(() => {}));
+        }
+
+        [Test]
+        public void AssertThrows_should_throw_when_exception_of_wrong_type_is_thrown()
+        {
+            Assert.Throws<AssertionException>(() => _assertions.AssertThrows<InvalidOperationException>(() => throw new OperationCanceledException("Test exception")));
+        }
+
+        [Test]
+        public async Task AssertThrowsAsync_should_succeed_when_exception_is_thrown()
+        {
+            await _assertions.AssertThrowsAsync(() => throw new Exception("Test exception"));
+        }
+
+        [Test]
+        public void AssertThrowsAsync_should_throw_when_no_exception_is_thrown()
+        {
+            Assert.Throws<AssertionException>(() =>
+            {
+                _assertions.AssertThrowsAsync(() => Task.CompletedTask);
+            });
+        }
+
+        [Test]
+        public async Task AssertThrowsAsync_should_succeed_when_typed_exception_is_thrown()
+        {
+            await _assertions.AssertThrowsAsync<InvalidOperationException>(() => throw new InvalidOperationException("Test exception"));
+        }
+
+        [Test]
+        public void AssertThrowsAsync_should_throw_when_no_typed_exception_is_thrown()
+        {
+            Assert.Throws<AssertionException>(() => _assertions.AssertThrowsAsync<InvalidOperationException>(() => Task.CompletedTask));
+        }
+
+        [Test]
+        public void AssertThrowsAsync_should_throw_when_exception_of_wrong_type_is_thrown()
+        {
+            Assert.Throws<AssertionException>(() => _assertions.AssertThrowsAsync<InvalidOperationException>(() => throw new OperationCanceledException("Test exception")));
         }
     }
 }
