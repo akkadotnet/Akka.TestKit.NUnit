@@ -1,3 +1,13 @@
+#### 1.5.67 April 28th 2026 ####
+- Bump `Akka.TestKit` to [1.5.67](https://github.com/akkadotnet/akka.net/releases/tag/1.5.67)
+
+#### 1.5.64 April 8th 2026 ####
+- Bump `Akka.TestKit` to [1.5.64](https://github.com/akkadotnet/akka.net/releases/tag/1.5.64)
+- Add `AssertThrows`, `AssertThrows<TException>`, `AssertThrowsAsync`, and `AssertThrowsAsync<TException>` assertion methods to `NUnitAssertions`
+
+#### 1.5.60 February 10th 2026 ####
+- Bump `Akka.TestKit` to [1.5.60](https://github.com/akkadotnet/akka.net/releases/tag/1.5.60)
+
 #### 1.5.59 January 26th 2025 ####
 - Bump `Akka.TestKit` to [1.5.59](https://github.com/akkadotnet/akka.net/releases/tag/1.5.59)
 
