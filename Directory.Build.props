@@ -23,7 +23,7 @@
     <NUnit3Version>3.14.0</NUnit3Version>
     <NUnit4Version>4.3.2</NUnit4Version>
     <NUnitAnalyzersVersion>4.6.0</NUnitAnalyzersVersion>
-    <NUnitTestAdapterVersion>4.6.0</NUnitTestAdapterVersion>
+    <NUnitTestAdapterVersion>6.2.0</NUnitTestAdapterVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DefineConstants>$(DefineConstants);RELEASE</DefineConstants>
