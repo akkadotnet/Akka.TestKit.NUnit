@@ -18,7 +18,7 @@
     <PublishRepositoryUrl>true</PublishRepositoryUrl><!-- https://github.com/dotnet/sourcelink/blob/main/docs/README.md#publishrepositoryurl -->
   </PropertyGroup>
   <PropertyGroup>
-    <AkkaTestKitVersion>1.5.69</AkkaTestKitVersion>
+    <AkkaTestKitVersion>1.5.70</AkkaTestKitVersion>
     <MicrosoftNetTestSdkVersion>18.6.0</MicrosoftNetTestSdkVersion>
     <NUnit3Version>3.14.0</NUnit3Version>
     <NUnit4Version>4.6.1</NUnit4Version>
